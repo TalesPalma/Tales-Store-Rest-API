@@ -11,6 +11,8 @@ func HandleRequests() {
 	r.GET("/products", controllers.GetProducts)
 	r.GET("/products/:id", controllers.GetProductById)
 	r.POST("products", controllers.PostProduct)
+	r.DELETE("/products/:id", controllers.DeleteProduct)
+	r.PUT("/products/:id", controllers.PutProduct)
 	r.Run()
 }
 

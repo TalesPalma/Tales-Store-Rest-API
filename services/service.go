@@ -5,15 +5,31 @@ import (
 	"github.com/TalesPalma/gin-golang-rest/models"
 )
 
-func GetProducts() []models.Product {
-	return []models.Product{}
+func FindProducts() []models.Product {
+	var products []models.Product
+	database.DB.Find(&products)
+	return products
 }
 
-func GetProductsById(id string) string {
-	return "Certo" + id
+func FindProductsById(id string) models.Product {
+	var product models.Product
+	database.DB.Find(&product, id)
+	return product
 }
 
-func PostProduct(product models.Product) models.Product {
+func InsertProduct(product models.Product) models.Product {
 	database.DB.Create(&product)
+	return product
+}
+
+func EditProduct(id string, product models.Product) models.Product {
+	database.DB.Model(&product).Where("id = ?", id).Updates(&product)
+	return product
+}
+
+func DeleteProduct(id string) models.Product {
+	var product models.Product
+	database.DB.Find(&product, id)
+	database.DB.Delete(&product, id)
 	return product
 }
