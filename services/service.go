@@ -1,6 +1,8 @@
 package services
 
 import (
+	"net/http"
+
 	"github.com/TalesPalma/gin-golang-rest/database"
 	"github.com/TalesPalma/gin-golang-rest/models"
 )
@@ -27,9 +29,14 @@ func EditProduct(id string, product models.Product) models.Product {
 	return product
 }
 
-func DeleteProduct(id string) models.Product {
+func DeleteProduct(id string) (string, int) {
 	var product models.Product
-	database.DB.Find(&product, id)
-	database.DB.Delete(&product, id)
-	return product
+	err := database.DB.Find(&product, id)
+	if err.RowsAffected == 0 {
+		return "Not found product", http.StatusNotFound
+	}
+	if err := database.DB.Delete(&product, id); err.Error != nil {
+		return "Error to delete product", http.StatusInternalServerError
+	}
+	return "Product deleted successfully", http.StatusOK
 }

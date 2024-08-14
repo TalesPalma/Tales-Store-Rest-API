@@ -9,13 +9,13 @@ import (
 )
 
 func GetProducts(c *gin.Context) {
-	c.JSON(200, services.FindProducts())
+	c.JSON(http.StatusOK, services.FindProducts())
 }
 
 func GetProductById(c *gin.Context) {
 	id := c.Param("id")
 	c.JSON(
-		200,
+		http.StatusOK,
 		services.FindProductsById(id),
 	)
 }
@@ -32,7 +32,7 @@ func PostProduct(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, services.InsertProduct(newProduct))
+	c.JSON(http.StatusCreated, services.InsertProduct(newProduct))
 }
 
 func PutProduct(c *gin.Context) {
@@ -42,10 +42,11 @@ func PutProduct(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, services.EditProduct(id, newProduct))
+	c.JSON(http.StatusOK, services.EditProduct(id, newProduct))
 }
 
 func DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
-	c.JSON(204, services.DeleteProduct(id))
+	messageStatus, status := services.DeleteProduct(id)
+	c.JSON(status, gin.H{"message": messageStatus})
 }
