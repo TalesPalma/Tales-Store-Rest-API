@@ -29,6 +29,13 @@ func EditProduct(id string, product models.Product) models.Product {
 	return product
 }
 
+func FindProductByName(name string) []models.Product {
+	var products []models.Product
+	database.DB.Where("name LIKE ?", "%"+name+"%").Find(&products)
+	return products
+
+}
+
 func DeleteProduct(id string) (string, int) {
 	var product models.Product
 	err := database.DB.Find(&product, id)

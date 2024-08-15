@@ -9,6 +9,15 @@ import (
 )
 
 func GetProducts(c *gin.Context) {
+	name := c.Query("name")
+
+	if name != "" {
+		c.JSON(
+			http.StatusOK,
+			services.FindProductByName(name),
+		)
+		return
+	}
 	c.JSON(http.StatusOK, services.FindProducts())
 }
 
