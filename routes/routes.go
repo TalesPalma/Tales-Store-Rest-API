@@ -7,15 +7,14 @@ import (
 
 func HandleRequests() {
 	r := gin.Default()
-	r.GET("/", index)
+	r.LoadHTMLGlob("templates/*")
+	r.GET("/", controllers.Index)
 	r.GET("/products", controllers.GetProducts)
 	r.GET("/products/:id", controllers.GetProductById)
 	r.POST("products", controllers.PostProduct)
 	r.DELETE("/products/:id", controllers.DeleteProduct)
 	r.PUT("/products/:id", controllers.PutProduct)
+	r.NoRoute(controllers.NotFound)
+	r.Static("/assets", "./assets")
 	r.Run()
-}
-
-func index(ctx *gin.Context) {
-	ctx.String(200, "Welcome to tales store API")
 }

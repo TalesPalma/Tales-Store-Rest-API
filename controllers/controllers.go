@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func Index(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", nil)
+}
+
 func GetProducts(c *gin.Context) {
 	name := c.Query("name")
 
@@ -19,6 +23,7 @@ func GetProducts(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, services.FindProducts())
+
 }
 
 func GetProductById(c *gin.Context) {
@@ -58,4 +63,8 @@ func DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
 	messageStatus, status := services.DeleteProduct(id)
 	c.JSON(status, gin.H{"message": messageStatus})
+}
+
+func NotFound(c *gin.Context) {
+	c.HTML(http.StatusOK, "404.html", nil)
 }
